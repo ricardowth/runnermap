@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Design tokens ---------- */
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-2: #f0f2f5;
+  --border: #e3e6eb;
+  --text: #0f1420;
+  --muted: #667085;
+  --accent: #ff5a1f;        /* marathon / brand */
+  --accent-strong: #e84a10;
+  --accent-soft: #fff0e9;
+  --half: #0ea5a0;          /* half marathon */
+  --half-soft: #e6f7f6;
+  --danger: #e5484d;
+  --ring: rgb(255 90 31 / 0.35);
+  --shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 16px rgb(16 24 40 / 0.06);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0a0d14;
+  --surface: #111620;
+  --surface-2: #171d29;
+  --border: #232b3a;
+  --text: #e8ebf1;
+  --muted: #8b95a8;
+  --accent: #ff6a33;
+  --accent-strong: #ff8354;
+  --accent-soft: #2a1710;
+  --half: #2dd4bf;
+  --half-soft: #0f2927;
+  --danger: #ff6369;
+  --ring: rgb(255 106 51 / 0.4);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-half: var(--half);
+  --color-half-soft: var(--half-soft);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-inter), ui-sans-serif, sans-serif;
+  --shadow-card: var(--shadow);
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Components ---------- */
+@utility card {
+  @apply rounded-2xl border border-border bg-surface shadow-card;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+    focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-(--ring) disabled:cursor-not-allowed disabled:opacity-60;
+}
+@utility btn-primary {
+  @apply btn bg-accent text-white hover:bg-accent-strong;
+}
+@utility btn-secondary {
+  @apply btn border border-border bg-surface text-text hover:bg-surface-2;
+}
+@utility btn-ghost {
+  @apply btn text-muted hover:bg-surface-2 hover:text-text;
+}
+@utility btn-danger {
+  @apply btn bg-danger text-white hover:opacity-90;
+}
+
+@utility input {
+  @apply w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-text placeholder:text-muted/70
+    transition outline-none focus:border-accent focus:ring-4 focus:ring-(--ring);
+}
+@utility label {
+  @apply mb-1.5 block text-sm font-medium text-text;
+}
+
+@utility chip {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+}
+@utility chip-full {
+  @apply chip bg-accent-soft text-accent;
+}
+@utility chip-half {
+  @apply chip bg-half-soft text-half;
+}
+
+/* ---------- Leaflet tweaks ---------- */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--surface-2);
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 14px;
+}
+.leaflet-popup-content p {
+  margin: 0;
+}
+.leaflet-popup-content {
+  margin: 12px 14px;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--muted);
+}
+.leaflet-bar a {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+.leaflet-bar a:hover {
+  background: var(--surface-2);
+}
+.leaflet-control-attribution {
+  background: color-mix(in srgb, var(--surface) 80%, transparent) !important;
+  color: var(--muted);
+}
+.leaflet-control-attribution a {
+  color: var(--muted);
+}
+
+.run-pin {
+  position: relative;
+  width: 20px;
+  height: 30px;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.35));
+  transform-origin: 50% 100%;
+  transition: transform 0.15s ease;
+}
+.run-pin svg {
+  display: block;
+  overflow: visible;
+}
+.leaflet-marker-icon:hover .run-pin {
+  transform: scale(1.2);
+}
+.run-pin-count {
+  position: absolute;
+  top: -7px;
+  right: -10px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  border: 1.5px solid var(--surface);
+  background: var(--text);
+  color: var(--surface);
+  font: 700 10px/14px var(--font-sans);
+  text-align: center;
+}
